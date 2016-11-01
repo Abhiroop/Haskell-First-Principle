@@ -29,4 +29,3 @@ areCars vehicles = map isCar vehicles
 getManu :: Vehicle -> Maybe Manufacturer
 getManu (Car manu  _) = Just manu
 getManu _ = Nothing
-
