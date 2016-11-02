@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleInstances #-}
+
 module AlgebraicDatatypes where
 
 data Price = Price Integer deriving (Eq,Show)
@@ -29,3 +31,23 @@ areCars vehicles = map isCar vehicles
 getManu :: Vehicle -> Maybe Manufacturer
 getManu (Car manu  _) = Just manu
 getManu _ = Nothing
+
+class TooMany a where
+  tooMany :: a -> Bool
+instance TooMany (Int, String) where
+  tooMany (n, _) = n > 42
+
+--------------------------------------------------
+
+newtype Group = Group (Int, Int) deriving Show
+
+instance TooMany Group where
+  tooMany (Group (m, n)) = m + n > 42
+  
+--------------------------------------------------------
+
+instance (Num a, TooMany a) => TooMany (a, a) where
+  tooMany (x, y) = tooMany $ x + y
+
+main = do
+  putStrLn "hello world"
