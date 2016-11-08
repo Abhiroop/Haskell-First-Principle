@@ -1,6 +1,7 @@
 module KnightQuest where
 
 import Control.Monad
+import Data.List
 
 type KnightPos = (Int, Int)
 
@@ -12,11 +13,17 @@ moveKnight (c,r) = do
     guard (c' `elem` [1..8] && r' `elem` [1..8])  
     return (c',r')
     
-in3 :: KnightPos -> [KnightPos]
-in3 start = do
-    first <- moveKnight start
-    second <- moveKnight first
-    moveKnight second
+--in3 :: KnightPos -> [KnightPos]
+--in3 start = do
+--    first <- moveKnight start
+--    second <- moveKnight first
+--    moveKnight second
+--
+--canReachIn3 :: KnightPos -> KnightPos -> Bool  
+--canReachIn3 start end = end `elem` in3 start
 
-canReachIn3 :: KnightPos -> KnightPos -> Bool  
-canReachIn3 start end = end `elem` in3 start 
+inMany :: Int -> KnightPos -> [KnightPos]  
+inMany x start = return start >>= foldr (<=<) return (replicate x moveKnight)
+
+canReachIn :: Int -> KnightPos -> KnightPos -> Bool  
+canReachIn x start end = end `elem` inMany x start  
